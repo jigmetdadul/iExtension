@@ -11,12 +11,15 @@ import SwiftUI
 
 struct ContentView: View {
      
-    @State private var tapCount = UserDefaults.standard.integer(forKey: "tapCount")
+    @AppStorage("tapCount") private var tapCount = 0
     var body: some View {
         
         Button("Count tap: \(tapCount)"){
             tapCount += 1
-            UserDefaults.standard.setValue(tapCount, forKey: "tapCount")
+            
+        }
+        Button("Decrement tap"){
+            tapCount -= 1
         }
         
     }
