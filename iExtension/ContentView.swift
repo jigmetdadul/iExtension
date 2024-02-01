@@ -10,34 +10,15 @@ import SwiftUI
 
 
 struct ContentView: View {
-    @State private var numbers = [Int]()
-    @State private var numberToAdd = 1
-    
+     
+    @State private var tapCount = UserDefaults.standard.integer(forKey: "tapCount")
     var body: some View {
-        NavigationStack{
-            List{
-                ForEach(numbers, id: \.self){ num in
-                    Text("Row: \(num)")
-                }.onDelete(perform: { indexSet in
-                    deletRow(at: indexSet)
-                })
-            }
-            Button("Add Number"){
-                
-                numbers.append(numberToAdd)
-                
-                numberToAdd += 1
-            }.animation(.bouncy, value: numberToAdd)
-            
-                .toolbar{
-                    EditButton()
-                }
+        
+        Button("Count tap: \(tapCount)"){
+            tapCount += 1
+            UserDefaults.standard.setValue(tapCount, forKey: "tapCount")
         }
         
-    }
-    
-    func deletRow(at indexOffset: IndexSet){
-        numbers.remove(atOffsets: indexOffset)
     }
 }
 
