@@ -9,29 +9,35 @@ import SwiftUI
 
 
 
-struct SecondView: View {
-    @Environment(\.dismiss) var dismiss
-    var name: String
-    var body: some View {
-        Text("hello this is a second view")
-        Button("Dismiss"){
-            dismiss()
-        }
-    }
-}
-
-
-
 struct ContentView: View {
-    @State private var showSecondView = false
+    @State private var numbers = [Int]()
+    @State private var numberToAdd = 1
+    
     var body: some View {
-        Button("Seond View"){
-            showSecondView.toggle()
+        NavigationStack{
+            List{
+                ForEach(numbers, id: \.self){ num in
+                    Text("Row: \(num)")
+                }.onDelete(perform: { indexSet in
+                    deletRow(at: indexSet)
+                })
+            }
+            Button("Add Number"){
+                
+                numbers.append(numberToAdd)
+                
+                numberToAdd += 1
+            }.animation(.bouncy, value: numberToAdd)
+            
+                .toolbar{
+                    EditButton()
+                }
         }
-        .sheet(isPresented: $showSecondView, content: {
-                SecondView(name: "JIgmet stanzin dadul")
-        })
         
+    }
+    
+    func deletRow(at indexOffset: IndexSet){
+        numbers.remove(atOffsets: indexOffset)
     }
 }
 
