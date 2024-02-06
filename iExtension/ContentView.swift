@@ -8,20 +8,42 @@
 import SwiftUI
 
 
+struct expensesItems{
+    let name: String
+    let type: String
+    let amount: Double
+}
+
+@Observable
+class Expenses{
+    var items = [expensesItems]()
+}
 
 struct ContentView: View {
-     
-    @AppStorage("tapCount") private var tapCount = 0
+    
+    @State private var itemList = Expenses()
+    
     var body: some View {
-        
-        Button("Count tap: \(tapCount)"){
-            tapCount += 1
+        NavigationStack{
+            List{
+                ForEach(itemList.items, id: \.name){ items in
+                    Text(items.name)
+                }
+                .onDelete(perform: deleteItem)
+            }
             
+            .navigationTitle("iExpense")
+            .toolbar(content: {
+                Button("Add item button", systemImage: "plus"){
+                    let newItem = expensesItems(name: "Text", type: "mode", amount: 10)
+                    itemList.items.append(newItem)
+                }
+                .foregroundColor(.black)
+            })
         }
-        Button("Decrement tap"){
-            tapCount -= 1
-        }
-        
+    }
+    func deleteItem(at offset: IndexSet){
+        itemList.items.remove(atOffsets: offset)
     }
 }
 
