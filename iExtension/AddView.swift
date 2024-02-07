@@ -14,7 +14,7 @@ struct AddView: View {
     @State private var type = "Buisness"
     @State private var amount = Double()
     let types = ["Buisness", "Household"]
-    
+    let localCurrency = Locale.current.currency?.identifier ?? "USD"
     var itemList:Expenses
     
     var body: some View {
@@ -28,7 +28,7 @@ struct AddView: View {
                             Text($0)
                         }
                     }
-                    TextField("Expense Amount", value: $amount, format: .currency(code: "USD"))
+                    TextField("Expense Amount", value: $amount, format: .currency(code: localCurrency))
                         .foregroundColor(.brown)
                 }
                
